@@ -1,57 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Categories</title>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
-<body>
-    <!-- Header Section (normally would be partial) -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/organizations">Organizations</a></li>
-            <li><a href="/projects">Projects</a></li>
-            <li><a href="/categories">Categories</a></li>
-        </ul>
-    </nav>
+<%- include('partials/header') %>
+<main>
+    <h1>Service Project Categories</h1>
+    <p>Browse our service projects by category:</p>
     
-    <!-- Main Content -->
-    <%- include('partials/header', { title: 'Service Categories' }) %>
-    <main>
-        <h1>Service Project Categories</h1>
-        <p>Browse our service projects by category:</p>
+    <ul class="categories-list">
+        <li class="category-item">
+            <h2>Environmental</h2>
+            <p>Projects focused on protecting and preserving our environment, including park cleanups, tree planting, and conservation efforts.</p>
+        </li>
         
-        <ul class="categories-list">
-            <li class="category-item">
-                <h2>Environmental</h2>
-                <p>Projects focused on protecting and preserving our environment, including park cleanups, tree planting, and conservation efforts.</p>
-            </li>
-            
-            <li class="category-item">
-                <h2>Educational</h2>
-                <p>Opportunities to share knowledge and skills through tutoring, mentoring, and teaching various subjects to community members.</p>
-            </li>
-            
-            <li class="category-item">
-                <h2>Community Service</h2>
-                <p>Direct service to community members through food drives, shelter support, and neighborhood improvement projects.</p>
-            </li>
-            
-            <li class="category-item">
-                <h2>Health and Wellness</h2>
-                <p>Projects promoting physical and mental well-being, including health fairs, fitness programs, and wellness workshops.</p>
-            </li>
-        </ul>
-    </main>
-    <%- include('partials/footer') %>
-    <!-- Footer Section (normally would be partial) -->
-    <footer>
-        <p>&copy; 2024 CSE 340 Service Network. All rights reserved.</p>
-    </footer>
-</body>
-
-</html>
+        <li class="category-item">
+            <h2>Educational</h2>
+            <p>Opportunities to share knowledge and skills through tutoring, mentoring, and teaching various subjects to community members.</p>
+        </li>
+        
+        <li class="category-item">
+            <h2>Community Service</h2>
+            <p>Direct service to community members through food drives, shelter support, and neighborhood improvement projects.</p>
+        </li>
+        
+        <li class="category-item">
+            <h2>Health and Wellness</h2>
+            <p>Projects promoting physical and mental well-being, including health fairs, fitness programs, and wellness workshops.</p>
+        </li>
+    </ul>
+</main>
+<%- include('partials/footer') %>
