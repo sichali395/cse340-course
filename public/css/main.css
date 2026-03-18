@@ -310,3 +310,23 @@ button:focus-visible {
         color: black;
     }
 }
+
+.category-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.category-item {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.category-item:hover {
+    background-color: #e0e0e0;
+}

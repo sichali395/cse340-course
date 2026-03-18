@@ -1,28 +1,20 @@
 <%- include('partials/header') %>
 <main>
-    <h1>Service Project Categories</h1>
+    <h1><%= title %></h1>
     <p>Browse our service projects by category:</p>
     
-    <ul class="categories-list">
-        <li class="category-item">
-            <h2>Environmental</h2>
-            <p>Projects focused on protecting and preserving our environment, including park cleanups, tree planting, and conservation efforts.</p>
-        </li>
-        
-        <li class="category-item">
-            <h2>Educational</h2>
-            <p>Opportunities to share knowledge and skills through tutoring, mentoring, and teaching various subjects to community members.</p>
-        </li>
-        
-        <li class="category-item">
-            <h2>Community Service</h2>
-            <p>Direct service to community members through food drives, shelter support, and neighborhood improvement projects.</p>
-        </li>
-        
-        <li class="category-item">
-            <h2>Health and Wellness</h2>
-            <p>Projects promoting physical and mental well-being, including health fairs, fitness programs, and wellness workshops.</p>
-        </li>
-    </ul>
+    <% if (categories && categories.length > 0) { %>
+        <ul class="categories-list">
+            <% categories.forEach(category => { %>
+                <li class="category-item">
+                    <h2><%= category.name %></h2>
+                    <p>Projects in this category will be displayed here.</p>
+                    <!-- You'll add project associations next week -->
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No categories found.</p>
+    <% } %>
 </main>
 <%- include('partials/footer') %>
