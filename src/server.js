@@ -3,8 +3,8 @@ import path from 'path';
 import express from 'express';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js'; // Add this import
-import { getCategories } from './src/models/categories.js';
+import { getAllProjects } from './src/models/projects.js';
+import { getCategories } from './src/models/categories.js'; // Fixed import
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -49,12 +49,12 @@ app.get('/organizations', async (req, res) => {
 app.get('/projects', async (req, res) => {
   const title = 'Service Projects';
   const projects = await getAllProjects(); // Fetch projects from the database
-  res.render('projects', { title });
+  res.render('projects', { title, projects }); // Fixed: Pass projects to the view
 });
 
 app.get('/categories', async (req, res) => {
   try {
-    const categories = await categoriesModel.getCategories();
+    const categories = await getCategories(); // Fixed: Use getCategories directly
     const title = 'Service Categories';
     res.render('categories', { title, categories });
   } catch (err) {

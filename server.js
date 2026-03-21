@@ -4,7 +4,7 @@ import express from 'express';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
-import { getCategories } from './src/models/categories.js';
+import { getCategories } from './src/models/categories.js'; // Fixed import
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -39,23 +39,22 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/organizations', async (req, res) => {
-  const organizations = await getAllOrganizations();
-  console.log(organizations);
-
-  const title = 'Our Partner Organizations';
-  res.render('organizations', { title, organizations });
+    const organizations = await getAllOrganizations();
+    console.log(organizations);
+      
+    const title = 'Our Partner Organizations';
+    res.render('organizations', { title, organizations });
 });
 
 app.get('/projects', async (req, res) => {
   const title = 'Service Projects';
   const projects = await getAllProjects(); // Fetch projects from the database
-  console.log(projects.rows); // Log the projects to verify data retrieval
-  res.render('projects', { title, projects: projects.rows });
+  res.render('projects', { title, projects }); // Fixed: Pass projects to the view
 });
 
 app.get('/categories', async (req, res) => {
   try {
-    const categories = await categoriesModel.getCategories();
+    const categories = await getCategories(); // Fixed: Use getCategories directly
     const title = 'Service Categories';
     res.render('categories', { title, categories });
   } catch (err) {

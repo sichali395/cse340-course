@@ -1,11 +1,12 @@
 import db from './db.js';  // Note the .js extension
 
-async function getCategories() {
+// Using arrow notation as required by Criteria 3
+const getCategories = async () => {
     try {
         const result = await db.query(
             'SELECT id, name FROM categories ORDER BY name'
         );
-        return result.rows;  // Important: return result.rows, not just result
+        return result.rows;
     } catch (error) {
         console.error('Error in getCategories:', error);
         throw error;
