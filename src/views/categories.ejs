@@ -1,20 +1,21 @@
 <%- include('partials/header') %>
 <main>
     <h1><%= title %></h1>
-    <p>Browse our service projects by category:</p>
-    
-    <% if (categories && categories.length > 0) { %>
-        <ul class="categories-list">
-            <% categories.forEach(category => { %>
-                <li class="category-item">
-                    <h2><%= category.name %></h2>
-                    <p>Projects in this category will be displayed here.</p>
-                    <!-- You'll add project associations next week -->
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No categories found.</p>
-    <% } %>
+    <div class="categories-list">
+        <% if (categories && categories.length > 0) { %>
+            <ul>
+                <% categories.forEach(category => { %>
+                    <li>
+                        <h2><%= category.name %></h2>
+                        <% if (category.description) { %>
+                            <p><%= category.description %></p>
+                        <% } %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No categories found.</p>
+        <% } %>
+    </div>
 </main>
 <%- include('partials/footer') %>

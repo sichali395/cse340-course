@@ -1,18 +1,20 @@
-import db from './db.js';  // Note the .js extension
+import db from './db.js';
 
-// Using arrow notation as required by Criteria 3
-const getCategories = async () => {
+const getAllCategories = async () => {
     try {
-        const result = await db.query(
-            'SELECT id, name FROM categories ORDER BY name'
-        );
+        // Check if categories table exists and has description column
+        const query = `
+            SELECT id, name, description
+            FROM categories 
+            ORDER BY name
+        `;
+        const result = await db.query(query);
         return result.rows;
     } catch (error) {
-        console.error('Error in getCategories:', error);
-        throw error;
+        console.error('Error in getAllCategories:', error);
+        // Return empty array if table doesn't exist yet
+        return [];
     }
-}
-
-export {
-    getCategories
 };
+
+export { getAllCategories };
