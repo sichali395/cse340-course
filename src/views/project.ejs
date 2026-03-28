@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= project.title %></h1>
+    
+    <div class="project-details">
+        <div class="project-info">
+            <h2>Project Details</h2>
+            <p><strong>Description:</strong> <%= project.description %></p>
+            <p><strong>Date:</strong> <%= new Date(project.date).toLocaleDateString() %></p>
+            <p><strong>Location:</strong> <%= project.location %></p>
+            <p><strong>Organization:</strong> 
+                <a href="/organization/<%= project.organization_id %>">
+                    <%= project.organization_name %>
+                </a>
+            </p>
+        </div>
+        
+        <div class="project-actions">
+            <h2>Get Involved</h2>
+            <p>Interested in volunteering for this project? Contact the organization directly to sign up!</p>
+            <a href="/organization/<%= project.organization_id %>" class="btn">Learn More About This Organization</a>
+        </div>
+    </div>
+    
+    <p><a href="/projects">← Back to all projects</a></p>
+</main>
+<%- include('partials/footer') %>

@@ -441,3 +441,106 @@ summary {
 .mb-2 {
     margin-bottom: 2rem;
 }
+
+/* Project Details Page */
+.project-details {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.project-info {
+    margin-bottom: 2rem;
+}
+
+.project-info h2 {
+    color: #667eea;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.project-info p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.project-info strong {
+    color: #764ba2;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.project-actions {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.project-actions h2 {
+    color: #667eea;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.project-actions p {
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+/* Projects List Enhancements */
+.projects-list {
+    margin-top: 2rem;
+}
+
+.project-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.project-card h2 {
+    color: #667eea;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.project-card h2 a {
+    color: #667eea;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.project-card h2 a:hover {
+    color: #764ba2;
+}
+
+.project-card p {
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.project-card strong {
+    color: #764ba2;
+}
+
+.project-card a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.project-card a:hover {
+    text-decoration: underline;
+}
