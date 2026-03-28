@@ -1,5 +1,5 @@
 // Import any needed model functions
-import { getUpcomingProjects, getProjectDetails } from '../models/projects.js';
+import { getUpcomingProjects, getProjectDetails, getCategoriesForProject } from '../models/projects.js';
 
 // Constant for number of upcoming projects to display
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -18,11 +18,12 @@ const showProjectsPage = async (req, res, next) => {
     }
 };
 
-// New controller function for project details page
+// Updated controller function for project details page to include categories
 const showProjectDetailsPage = async (req, res, next) => {
     try {
         const projectId = req.params.id;
         const project = await getProjectDetails(projectId);
+        const categories = await getCategoriesForProject(projectId);
         
         // Check if project exists
         if (!project) {
@@ -32,7 +33,7 @@ const showProjectDetailsPage = async (req, res, next) => {
         }
         
         const title = project.title;
-        res.render('project', { title, project });
+        res.render('project', { title, project, categories });
     } catch (error) {
         console.error('Error in showProjectDetailsPage:', error);
         const err = new Error('Failed to load project details');

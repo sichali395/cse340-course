@@ -46,7 +46,6 @@ const getProjectsByOrganizationId = async (organizationId) => {
     }
 };
 
-// New function: Get upcoming projects (limited number)
 const getUpcomingProjects = async (number_of_projects) => {
     try {
         const query = `
@@ -73,7 +72,6 @@ const getUpcomingProjects = async (number_of_projects) => {
     }
 };
 
-// New function: Get single project details by ID
 const getProjectDetails = async (projectId) => {
     try {
         const query = `
@@ -98,4 +96,24 @@ const getProjectDetails = async (projectId) => {
     }
 };
 
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };
+// NEW: Get categories for a specific project
+const getCategoriesForProject = async (projectId) => {
+    try {
+        const query = `
+            SELECT 
+                c.id,
+                c.name
+            FROM categories c
+            JOIN project_categories pc ON c.id = pc.category_id
+            WHERE pc.project_id = $1
+            ORDER BY c.name
+        `;
+        const result = await db.query(query, [projectId]);
+        return result.rows;
+    } catch (error) {
+        console.error('Error in getCategoriesForProject:', error);
+        throw error;
+    }
+};
+
+export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, getCategoriesForProject };
