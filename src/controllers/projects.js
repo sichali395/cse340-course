@@ -1,15 +1,14 @@
-// Import any needed model functions
+// src/controllers/projects.js
 import { getUpcomingProjects, getProjectDetails, getCategoriesForProject } from '../models/projects.js';
 
-// Constant for number of upcoming projects to display
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
-// Define any controller functions
 const showProjectsPage = async (req, res, next) => {
     try {
         const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
+        const message = req.query.message || null;  // ← Get message from query params
         const title = 'Upcoming Service Projects';
-        res.render('projects', { title, projects });
+        res.render('projects', { title, projects, message });  // ← Always pass message
     } catch (error) {
         console.error('Error in showProjectsPage:', error);
         const err = new Error('Failed to load projects');
@@ -18,14 +17,13 @@ const showProjectsPage = async (req, res, next) => {
     }
 };
 
-// Updated controller function for project details page to include categories
 const showProjectDetailsPage = async (req, res, next) => {
     try {
         const projectId = req.params.id;
         const project = await getProjectDetails(projectId);
         const categories = await getCategoriesForProject(projectId);
+        const message = req.query.message || null;
         
-        // Check if project exists
         if (!project) {
             const err = new Error('Project not found');
             err.status = 404;
@@ -33,7 +31,7 @@ const showProjectDetailsPage = async (req, res, next) => {
         }
         
         const title = project.title;
-        res.render('project', { title, project, categories });
+        res.render('project', { title, project, categories, message });
     } catch (error) {
         console.error('Error in showProjectDetailsPage:', error);
         const err = new Error('Failed to load project details');
@@ -42,5 +40,4 @@ const showProjectDetailsPage = async (req, res, next) => {
     }
 };
 
-// Export any controller functions
 export { showProjectsPage, showProjectDetailsPage };

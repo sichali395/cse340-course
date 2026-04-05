@@ -2,6 +2,10 @@
 <main>
     <h1><%= organizationDetails.name %></h1>
     
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="success-message"><%= message %></div>
+    <% } %>
+    
     <div class="organization-details">
         <% if (organizationDetails.logo_filename) { %>
             <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo" class="organization-logo">

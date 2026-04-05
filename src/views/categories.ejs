@@ -1,23 +1,37 @@
 <%- include('partials/header') %>
 <main>
-    <h1><%= title %></h1>
+    <h1>Service Categories</h1>
+    
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="success-message"><%= message %></div>
+    <% } %>
+    
+    <div class="action-bar">
+        <a href="/new-category" class="btn">+ Create New Category</a>
+    </div>
+    
     <div class="categories-list">
         <% if (categories && categories.length > 0) { %>
             <ul>
                 <% categories.forEach(category => { %>
                     <li>
-                        <h2>
-                            <a href="/category/<%= category.id %>"><%= category.name %></a>
-                        </h2>
-                        <% if (category.description) { %>
-                            <p><%= category.description %></p>
-                        <% } %>
+                        <div class="category-card">
+                            <h2><a href="/category/<%= category.id %>"><%= category.name %></a></h2>
+                            <div class="category-actions">
+                                <a href="/edit-category/<%= category.id %>" class="btn-edit">Edit Category</a>
+                            </div>
+                        </div>
                     </li>
-                <% }) %>
+                <% }); %>
             </ul>
         <% } else { %>
-            <p>No categories found.</p>
+            <div class="no-data-message">
+                <p>No categories found in the database.</p>
+                <p><a href="/new-category">Click here to create a category</a></p>
+            </div>
         <% } %>
     </div>
+    
+    <p><a href="/">← Back to Home</a></p>
 </main>
 <%- include('partials/footer') %>

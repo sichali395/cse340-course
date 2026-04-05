@@ -1,3 +1,4 @@
+// src/models/projects.js
 import db from './db.js';
 
 const getAllProjects = async () => {
@@ -46,6 +47,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
     }
 };
 
+// FIXED: Show ALL projects if no upcoming, or show message
 const getUpcomingProjects = async (number_of_projects) => {
     try {
         const query = `
@@ -65,6 +67,28 @@ const getUpcomingProjects = async (number_of_projects) => {
         `;
         const query_params = [number_of_projects];
         const result = await db.query(query, query_params);
+        
+        // If no upcoming projects, return all projects as fallback
+        if (result.rows.length === 0) {
+            console.log('No upcoming projects found, showing all projects');
+            const allProjectsQuery = `
+                SELECT 
+                    p.project_id,
+                    p.organization_id,
+                    p.title,
+                    p.description,
+                    p.location,
+                    p.date,
+                    o.name as organization_name
+                FROM projects p
+                JOIN organizations o ON p.organization_id = o.organization_id
+                ORDER BY p.date DESC
+                LIMIT $1;
+            `;
+            const allResult = await db.query(allProjectsQuery, [number_of_projects]);
+            return allResult.rows;
+        }
+        
         return result.rows;
     } catch (error) {
         console.error('Error in getUpcomingProjects:', error);
@@ -96,7 +120,7 @@ const getProjectDetails = async (projectId) => {
     }
 };
 
-// NEW: Get categories for a specific project
+// Get categories for a specific project
 const getCategoriesForProject = async (projectId) => {
     try {
         const query = `

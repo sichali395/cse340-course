@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+<main>
+    <h1>Create New Category</h1>
+    
+    <% if (errors && errors.length > 0) { %>
+        <div class="error-messages">
+            <ul>
+                <% errors.forEach(error => { %>
+                    <li><%= error %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    
+    <div class="form-container">
+        <form action="/new-category" method="POST" class="category-form" id="createCategoryForm">
+            <div class="form-group">
+                <label for="name">Category Name:</label>
+                <input type="text" 
+                       id="name" 
+                       name="name" 
+                       value="<%= formData.name || '' %>"
+                       maxlength="100"
+                       required
+                       class="form-control"
+                       placeholder="Enter category name (e.g., Environment, Education)">
+                <small>Maximum 100 characters</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn">Create Category</button>
+                <a href="/categories" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <p><a href="/categories">← Back to Categories</a></p>
+</main>
+
+<script>
+    document.getElementById('createCategoryForm').addEventListener('submit', function(e) {
+        const nameInput = document.getElementById('name');
+        const name = nameInput.value.trim();
+        
+        if (!name) {
+            alert('Category name is required');
+            e.preventDefault();
+            return false;
+        }
+        
+        if (name.length > 100) {
+            alert('Category name must be 100 characters or less');
+            e.preventDefault();
+            return false;
+        }
+        
+        return true;
+    });
+</script>
+
+<%- include('partials/footer') %>

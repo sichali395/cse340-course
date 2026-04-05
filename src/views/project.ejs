@@ -2,6 +2,10 @@
 <main>
     <h1><%= project.title %></h1>
     
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="success-message"><%= message %></div>
+    <% } %>
+    
     <div class="project-details">
         <div class="project-info">
             <h2>Project Details</h2>
@@ -14,14 +18,19 @@
                 </a>
             </p>
             
-            <!-- NEW: Category Tags Section -->
-            <% if (categories && categories.length > 0) { %>
+            <!-- Categories section - THIS IS CORRECT -->
+            <div class="category-section">
                 <p><strong>Categories:</strong>
-                    <% categories.forEach(category => { %>
-                        <a href="/category/<%= category.id %>" class="tag"><%= category.name %></a>
-                    <% }); %>
+                    <% if (categories && categories.length > 0) { %>
+                        <% categories.forEach(category => { %>
+                            <a href="/category/<%= category.id %>" class="tag"><%= category.name %></a>
+                        <% }); %>
+                    <% } else { %>
+                        <span class="no-categories">No categories assigned yet</span>
+                    <% } %>
                 </p>
-            <% } %>
+                <a href="/assign-categories/<%= project.project_id %>" class="btn-manage-categories">Manage Categories</a>
+            </div>
         </div>
         
         <div class="project-actions">
