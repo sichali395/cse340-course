@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import db from '../models/db.js';
 import { createUser } from '../models/users.js';
 import { authenticateUser } from '../models/users.js';
+import { getUserVolunteerProjects } from '../models/volunteers.js';
 
 // Registration form display
 const showUserRegistrationForm = (req, res) => {
@@ -87,15 +88,27 @@ const requireAdmin = (req, res, next) => {
 };
 
 // Dashboard page display
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
     const user = req.session.user;
     const error = req.query.error || null;
+    const message = req.query.message || null;
+    
+    // Get user's volunteer projects
+    let volunteerProjects = [];
+    try {
+        volunteerProjects = await getUserVolunteerProjects(user.user_id);
+    } catch (error) {
+        console.error('Error fetching volunteering projects:', error);
+    }
+    
     res.render('dashboard', { 
         title: 'Dashboard',
         name: user.name,
         email: user.email,
         user: user,
-        error: error
+        error: error,
+        message: message,
+        volunteerProjects: volunteerProjects
     });
 };
 

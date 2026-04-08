@@ -6,6 +6,10 @@
         <div class="alert alert-danger">You don't have permission to access that page.</div>
     <% } %>
     
+    <% if (message) { %>
+        <div class="alert alert-success"><%= message %></div>
+    <% } %>
+    
     <div class="welcome-section">
         <h2>Welcome back, <%= name %>!</h2>
         <p>Email: <%= email %></p>
@@ -13,6 +17,30 @@
     </div>
     
     <div class="dashboard-sections">
+        <!-- Volunteering Projects Section -->
+        <div class="section">
+            <h3>My Volunteering Projects</h3>
+            <% if (volunteerProjects && volunteerProjects.length > 0) { %>
+                <ul class="volunteer-list">
+                    <% volunteerProjects.forEach(function(project) { %>
+                        <li>
+                            <strong><%= project.title %></strong><br>
+                            <em><%= project.organization_name %></em><br>
+                            Location: <%= project.location %><br>
+                            Date: <%= new Date(project.date).toLocaleDateString() %><br>
+                            <form action="/project/<%= project.project_id %>/remove-volunteer" method="POST" class="inline-form">
+                                <button type="submit" class="btn-remove">Remove</button>
+                            </form>
+                            <a href="/project/<%= project.project_id %>">View Details</a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>You haven't volunteered for any projects yet.</p>
+                <a href="/projects">Browse Projects to Volunteer</a>
+            <% } %>
+        </div>
+        
         <div class="section">
             <h3>My Activity</h3>
             <p>View your volunteer history and upcoming commitments.</p>

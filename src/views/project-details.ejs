@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= project.title %></h1>
+    
+    <% if (locals.volunteer === 'success') { %>
+        <div class="alert alert-success">You are now volunteering for this project!</div>
+    <% } %>
+    <% if (locals.volunteer === 'removed') { %>
+        <div class="alert alert-info">You have been removed from this project.</div>
+    <% } %>
+    
+    <div class="project-info">
+        <p><strong>Organization:</strong> <%= project.organization_name %></p>
+        <p><strong>Location:</strong> <%= project.location %></p>
+        <p><strong>Date:</strong> <%= project.date %></p>
+        <p><strong>Description:</strong> <%= project.description %></p>
+    </div>
+    
+    <% if (user) { %>
+        <div class="volunteer-section">
+            <% if (isVolunteering) { %>
+                <p>You are volunteering for this project!</p>
+                <form action="/project/<%= project.project_id %>/remove-volunteer" method="POST">
+                    <button type="submit" class="btn btn-warning">Remove Volunteering</button>
+                </form>
+            <% } else { %>
+                <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+                    <button type="submit" class="btn btn-success">Volunteer for This Project</button>
+                </form>
+            <% } %>
+        </div>
+    <% } else { %>
+        <p><a href="/login">Login</a> to volunteer for this project.</p>
+    <% } %>
+    
+    <div class="back-link">
+        <a href="/projects">← Back to Projects</a>
+    </div>
+</main>
+<%- include('partials/footer') %>

@@ -2,7 +2,7 @@
 import express from 'express';
 import { showHomePage } from './index.js';
 import { showOrganizationsPage, showOrganizationDetailsPage } from './organizations.js';
-import { showProjectsPage, showProjectDetailsPage } from './projects.js';
+import { showProjectsPage, showProjectDetailsPage, addVolunteerHandler, removeVolunteerHandler } from './projects.js';
 import { 
     showCategoriesPage, 
     showCategoryDetailsPage,
@@ -25,6 +25,7 @@ import {
     showDashboard,
     getAllUsers
 } from './users.js';
+import { getUserVolunteerProjects } from '../models/volunteers.js';
 
 const router = express.Router();
 
@@ -38,6 +39,10 @@ router.get('/organization/:id', showOrganizationDetailsPage);
 // Projects routes
 router.get('/projects', showProjectsPage);
 router.get('/project/:id', showProjectDetailsPage);
+
+// Volunteer routes (protected by login)
+router.post('/project/:id/volunteer', requireLogin, addVolunteerHandler);
+router.post('/project/:id/remove-volunteer', requireLogin, removeVolunteerHandler);
 
 // Categories routes - READ
 router.get('/categories', showCategoriesPage);
