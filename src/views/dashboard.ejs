@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+<main>
+    <h1>My Dashboard</h1>
+    
+    <% if (error === 'access_denied') { %>
+        <div class="alert alert-danger">You don't have permission to access that page.</div>
+    <% } %>
+    
+    <div class="welcome-section">
+        <h2>Welcome back, <%= name %>!</h2>
+        <p>Email: <%= email %></p>
+        <p>Role: <%= user.role_id === 2 ? 'Administrator' : 'User' %></p>
+    </div>
+    
+    <div class="dashboard-sections">
+        <div class="section">
+            <h3>My Activity</h3>
+            <p>View your volunteer history and upcoming commitments.</p>
+            <a href="/my-projects">View My Projects</a>
+        </div>
+        
+        <div class="section">
+            <h3>Account Settings</h3>
+            <p>Update your profile and preferences.</p>
+            <a href="/account-settings">Edit Settings</a>
+        </div>
+        
+        <% if (user.role_id === 2) { %>
+            <div class="section admin-section">
+                <h3>Admin Controls</h3>
+                <p>Manage system users and settings.</p>
+                <a href="/users">Manage Users</a>
+            </div>
+        <% } %>
+    </div>
+    
+    <div class="back-link">
+        <a href="/">← Back to Home</a>
+    </div>
+</main>
+<%- include('partials/footer') %>

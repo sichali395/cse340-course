@@ -14,6 +14,17 @@ import {
     assignCategoriesHandler
 } from './categories.js';
 import { testErrorPage } from './errors.js';
+import { 
+    showUserRegistrationForm, 
+    processUserRegistrationForm, 
+    showLoginForm, 
+    processLoginForm, 
+    processLogout,
+    requireLogin,
+    requireAdmin,
+    showDashboard,
+    getAllUsers
+} from './users.js';
 
 const router = express.Router();
 
@@ -32,17 +43,32 @@ router.get('/project/:id', showProjectDetailsPage);
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);
 
-// NEW: Categories routes - CREATE
-router.get('/new-category', showCreateCategoryForm);
-router.post('/new-category', createCategoryHandler);
+// Categories routes - CREATE (Admin only)
+router.get('/new-category', requireAdmin, showCreateCategoryForm);
+router.post('/new-category', requireAdmin, createCategoryHandler);
 
-// NEW: Categories routes - UPDATE
-router.get('/edit-category/:id', showEditCategoryForm);
-router.post('/edit-category/:id', updateCategoryHandler);
+// Categories routes - UPDATE (Admin only)
+router.get('/edit-category/:id', requireAdmin, showEditCategoryForm);
+router.post('/edit-category/:id', requireAdmin, updateCategoryHandler);
 
-// NEW: Category assignment routes (Rubric Criterion #3)
-router.get('/assign-categories/:id', showAssignCategoriesPage);
-router.post('/assign-categories/:id', assignCategoriesHandler);
+// Category assignment routes (Admin only)
+router.get('/assign-categories/:id', requireAdmin, showAssignCategoriesPage);
+router.post('/assign-categories/:id', requireAdmin, assignCategoriesHandler);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route (requires login)
+router.get('/dashboard', requireLogin, showDashboard);
+
+// Users list route (Admin only)
+router.get('/users', requireAdmin, getAllUsers);
 
 // Error-handling routes
 router.get('/test-error', testErrorPage);

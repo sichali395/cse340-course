@@ -3,6 +3,13 @@
     <h1>Welcome to Service Network</h1>
     <p>Connecting volunteers with meaningful service opportunities.</p>
     
+    <!-- Dashboard link for logged-in users -->
+    <% if (isLoggedIn) { %>
+        <div class="dashboard-link">
+            <p><a href="/dashboard">My Dashboard</a></p>
+        </div>
+    <% } %>
+    
     <div class="featured-links">
         <h2>Get Involved</h2>
         <ul>
