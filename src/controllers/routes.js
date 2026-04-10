@@ -29,51 +29,37 @@ import { getUserVolunteerProjects } from '../models/volunteers.js';
 
 const router = express.Router();
 
-// Home page
-router.get('/', showHomePage);
+// Public routes (no login required)
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
 
-// Organizations routes
-router.get('/organizations', showOrganizationsPage);
-router.get('/organization/:id', showOrganizationDetailsPage);
-
-// Projects routes
-router.get('/projects', showProjectsPage);
-router.get('/project/:id', showProjectDetailsPage);
+// Protected routes (require login)
+router.get('/', requireLogin, showHomePage);
+router.get('/organizations', requireLogin, showOrganizationsPage);
+router.get('/organization/:id', requireLogin, showOrganizationDetailsPage);
+router.get('/projects', requireLogin, showProjectsPage);
+router.get('/project/:id', requireLogin, showProjectDetailsPage);
+router.get('/categories', requireLogin, showCategoriesPage);
+router.get('/category/:id', requireLogin, showCategoryDetailsPage);
 
 // Volunteer routes (protected by login)
 router.post('/project/:id/volunteer', requireLogin, addVolunteerHandler);
 router.post('/project/:id/remove-volunteer', requireLogin, removeVolunteerHandler);
 
-// Categories routes - READ
-router.get('/categories', showCategoriesPage);
-router.get('/category/:id', showCategoryDetailsPage);
-
-// Categories routes - CREATE (Admin only)
+// Admin only routes
 router.get('/new-category', requireAdmin, showCreateCategoryForm);
 router.post('/new-category', requireAdmin, createCategoryHandler);
-
-// Categories routes - UPDATE (Admin only)
 router.get('/edit-category/:id', requireAdmin, showEditCategoryForm);
 router.post('/edit-category/:id', requireAdmin, updateCategoryHandler);
-
-// Category assignment routes (Admin only)
 router.get('/assign-categories/:id', requireAdmin, showAssignCategoriesPage);
 router.post('/assign-categories/:id', requireAdmin, assignCategoriesHandler);
-
-// User registration routes
-router.get('/register', showUserRegistrationForm);
-router.post('/register', processUserRegistrationForm);
-
-// User login routes
-router.get('/login', showLoginForm);
-router.post('/login', processLoginForm);
-router.get('/logout', processLogout);
-
-// Protected dashboard route (requires login)
-router.get('/dashboard', requireLogin, showDashboard);
-
-// Users list route (Admin only)
 router.get('/users', requireAdmin, getAllUsers);
+
+// Dashboard route (requires login)
+router.get('/dashboard', requireLogin, showDashboard);
 
 // Error-handling routes
 router.get('/test-error', testErrorPage);

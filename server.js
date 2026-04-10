@@ -25,15 +25,6 @@ app.use(session({
 // Flash middleware
 app.use(flash());
 
-// DEBUG: Check if flash is working
-app.use((req, res, next) => {
-    console.log('=== DEBUG ===');
-    console.log('Session ID:', req.session?.id);
-    console.log('req.flash type:', typeof req.flash);
-    console.log('req.flash exists?', req.flash !== undefined);
-    next();
-});
-
 // Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -59,11 +50,14 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware to make NODE_ENV available to all templates
+// Middleware to make user and isLoggedIn available to all templates
 app.use((req, res, next) => {
     res.locals.isLoggedIn = false;
+    res.locals.user = null;
+    
     if (req.session && req.session.user) {
         res.locals.isLoggedIn = true;
+        res.locals.user = req.session.user;
     }
 
     res.locals.NODE_ENV = NODE_ENV;

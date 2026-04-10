@@ -10,20 +10,18 @@
     <header>
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/organizations">Organizations</a></li>
-                <li><a href="/projects">Projects</a></li>
-                <li><a href="/categories">Categories</a></li>
-                
-                <!-- Authentication Links - Using isLoggedIn from server.js -->
                 <% if (isLoggedIn) { %>
-                    <!-- User is logged in - Show Logout -->
+                    <!-- Show these links ONLY when logged in -->
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/organizations">Organizations</a></li>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="/categories">Categories</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/logout">Logout</a></li>
                 <% } else { %>
-                    <!-- User is not logged in - Show Register and Login -->
+                    <!-- Show these links ONLY when NOT logged in -->
                     <li><a href="/register">Register</a></li>
                     <li><a href="/login">Login</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
                 <% } %>
             </ul>
         </nav>
