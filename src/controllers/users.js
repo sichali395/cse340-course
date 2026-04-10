@@ -11,7 +11,7 @@ const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register', error: error, registered: registered });
 };
 
-// Process registration
+// Process registration - NOW REDIRECTS TO DASHBOARD
 const processUserRegistrationForm = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -19,7 +19,12 @@ const processUserRegistrationForm = async (req, res) => {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
         const newUser = await createUser(name, email, passwordHash);
-        res.redirect('/?registered=true');
+        
+        // Auto-login after registration
+        req.session.user = newUser;
+        console.log('User registered and logged in:', newUser);
+        
+        res.redirect('/dashboard');
         
     } catch (error) {
         console.error('Error registering user:', error);
@@ -38,7 +43,7 @@ const showLoginForm = (req, res) => {
     res.render('login', { title: 'Login', error: error });
 };
 
-// Process login
+// Process login - REDIRECTS TO DASHBOARD
 const processLoginForm = async (req, res) => {
     const { email, password } = req.body;
 
