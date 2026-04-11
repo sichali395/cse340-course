@@ -38,8 +38,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
             WHERE organization_id = $1
             ORDER BY date;
         `;
-        const query_params = [organizationId];
-        const result = await db.query(query, query_params);
+        const result = await db.query(query, [organizationId]);
         return result.rows;
     } catch (error) {
         console.error('Error in getProjectsByOrganizationId:', error);
@@ -47,7 +46,6 @@ const getProjectsByOrganizationId = async (organizationId) => {
     }
 };
 
-// FIXED: Show ALL projects if no upcoming, or show message
 const getUpcomingProjects = async (number_of_projects) => {
     try {
         const query = `
@@ -65,12 +63,9 @@ const getUpcomingProjects = async (number_of_projects) => {
             ORDER BY p.date ASC
             LIMIT $1;
         `;
-        const query_params = [number_of_projects];
-        const result = await db.query(query, query_params);
+        const result = await db.query(query, [number_of_projects]);
         
-        // If no upcoming projects, return all projects as fallback
         if (result.rows.length === 0) {
-            console.log('No upcoming projects found, showing all projects');
             const allProjectsQuery = `
                 SELECT 
                     p.project_id,
@@ -111,8 +106,7 @@ const getProjectDetails = async (projectId) => {
             JOIN organizations o ON p.organization_id = o.organization_id
             WHERE p.project_id = $1;
         `;
-        const query_params = [projectId];
-        const result = await db.query(query, query_params);
+        const result = await db.query(query, [projectId]);
         return result.rows.length > 0 ? result.rows[0] : null;
     } catch (error) {
         console.error('Error in getProjectDetails:', error);
@@ -120,7 +114,6 @@ const getProjectDetails = async (projectId) => {
     }
 };
 
-// Get categories for a specific project
 const getCategoriesForProject = async (projectId) => {
     try {
         const query = `
@@ -140,4 +133,59 @@ const getCategoriesForProject = async (projectId) => {
     }
 };
 
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, getCategoriesForProject };
+// Get all organizations for dropdown
+const getAllOrganizationsForSelect = async () => {
+    try {
+        const query = `SELECT organization_id, name FROM organizations ORDER BY name`;
+        const result = await db.query(query);
+        return result.rows;
+    } catch (error) {
+        console.error('Error in getAllOrganizationsForSelect:', error);
+        throw error;
+    }
+};
+
+// CREATE: Insert new project
+const createProject = async (organization_id, title, description, location, date) => {
+    try {
+        const query = `
+            INSERT INTO projects (organization_id, title, description, location, date) 
+            VALUES ($1, $2, $3, $4, $5) 
+            RETURNING project_id, organization_id, title, description, location, date
+        `;
+        const result = await db.query(query, [organization_id, title.trim(), description.trim(), location.trim(), date]);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error in createProject:', error);
+        throw error;
+    }
+};
+
+// UPDATE: Update existing project
+const updateProject = async (projectId, organization_id, title, description, location, date) => {
+    try {
+        const query = `
+            UPDATE projects 
+            SET organization_id = $1, title = $2, description = $3, location = $4, date = $5
+            WHERE project_id = $6 
+            RETURNING project_id, organization_id, title, description, location, date
+        `;
+        const result = await db.query(query, [organization_id, title.trim(), description.trim(), location.trim(), date, projectId]);
+        return result.rows.length > 0 ? result.rows[0] : null;
+    } catch (error) {
+        console.error('Error in updateProject:', error);
+        throw error;
+    }
+};
+
+// SINGLE EXPORT - all functions at once
+export { 
+    getAllProjects, 
+    getProjectsByOrganizationId, 
+    getUpcomingProjects, 
+    getProjectDetails, 
+    getCategoriesForProject,
+    getAllOrganizationsForSelect,
+    createProject,
+    updateProject
+};

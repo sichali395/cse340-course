@@ -6,6 +6,13 @@
         <div class="success-message"><%= message %></div>
     <% } %>
     
+    <!-- Create Project Button - Only visible to Admin users -->
+    <% if (user && user.role_id === 2) { %>
+        <div class="action-bar">
+            <a href="/new-project" class="btn">+ Create New Project</a>
+        </div>
+    <% } %>
+    
     <div class="projects-list">
         <% if (projects && projects.length > 0) { %>
             <% projects.forEach(project => { %>
@@ -16,6 +23,11 @@
                     <p><strong>Location:</strong> <%= project.location %></p>
                     <p><%= project.description %></p>
                     <a href="/project/<%= project.project_id %>" class="btn">View Details</a>
+                    
+                    <!-- Edit Project Button inside the card - Only visible to Admin users -->
+                    <% if (user && user.role_id === 2) { %>
+                        <a href="/edit-project/<%= project.project_id %>" class="btn-edit">Edit Project</a>
+                    <% } %>
                 </div>
             <% }); %>
         <% } else { %>

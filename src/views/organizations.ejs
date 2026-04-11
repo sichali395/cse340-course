@@ -1,21 +1,51 @@
 <%- include('partials/header') %>
 <main>
-    <h1><%= title %></h1>
+    <h1>Our Partner Organizations</h1>
+    
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="success-message"><%= message %></div>
+    <% } %>
+    
+    <!-- Create Organization Button - Only visible to Admin users -->
+    <% if (user && user.role_id === 2) { %>
+        <div class="action-bar">
+            <a href="/new-organization" class="btn">+ Create New Organization</a>
+        </div>
+    <% } %>
+    
     <div class="organizations-grid">
-        <% organizations.forEach(organization => { %>
-            <div class="organization-card">
-                <% if (organization.logo_filename) { %>
-                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+        <% if (organizations && organizations.length > 0) { %>
+            <% organizations.forEach(organization => { %>
+                <div class="organization-card">
+                    <% if (organization.logo_filename) { %>
+                        <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    <% } %>
+                    <h2>
+                        <a href="/organization/<%= organization.organization_id %>">
+                            <%= organization.name %>
+                        </a>
+                    </h2>
+                    <p><%= organization.description %></p>
+                    <p>Email: <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a></p>
+                    
+                    <!-- Edit Organization Button inside the card - Only visible to Admin users -->
+                    <% if (user && user.role_id === 2) { %>
+                        <div class="admin-actions">
+                            <a href="/edit-organization/<%= organization.organization_id %>" class="btn-edit">Edit Organization</a>
+                        </div>
+                    <% } %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="no-data-message">
+                <p>No organizations found.</p>
+                <% if (user && user.role_id === 2) { %>
+                    <p><a href="/new-organization">Click here to create an organization</a></p>
                 <% } %>
-                <h2>
-                    <a href="/organization/<%= organization.organization_id %>">
-                        <%= organization.name %>
-                    </a>
-                </h2>
-                <p><%= organization.description %></p>
-                <p>Email: <a href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a></p>
             </div>
-        <% }) %>
+        <% } %>
     </div>
+    
+    <p><a href="/">← Back to Home</a></p>
 </main>
 <%- include('partials/footer') %>

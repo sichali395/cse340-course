@@ -1,10 +1,24 @@
 // src/controllers/routes.js
 import express from 'express';
-import { showMyActivityPage } from './activity.js';
-import { showAccountSettingsPage, updateProfileHandler, updatePasswordHandler } from './settings.js';
 import { showHomePage } from './index.js';
-import { showOrganizationsPage, showOrganizationDetailsPage } from './organizations.js';
-import { showProjectsPage, showProjectDetailsPage, addVolunteerHandler, removeVolunteerHandler } from './projects.js';
+import { 
+    showOrganizationsPage, 
+    showOrganizationDetailsPage,
+    showCreateOrganizationForm,
+    createOrganizationHandler,
+    showEditOrganizationForm,
+    updateOrganizationHandler
+} from './organizations.js';
+import { 
+    showProjectsPage, 
+    showProjectDetailsPage,
+    showCreateProjectForm,
+    createProjectHandler,
+    showEditProjectForm,
+    updateProjectHandler,
+    addVolunteerHandler, 
+    removeVolunteerHandler
+} from './projects.js';
 import { 
     showCategoriesPage, 
     showCategoryDetailsPage,
@@ -30,7 +44,7 @@ import {
 
 const router = express.Router();
 
-// ========== PUBLIC ROUTES (NO LOGIN REQUIRED - anyone can view) ==========
+// ========== PUBLIC ROUTES ==========
 router.get('/', showHomePage);
 router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
@@ -46,22 +60,30 @@ router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 
-// ========== PROTECTED ROUTES (require login) ==========
+// ========== PROTECTED ROUTES ==========
 router.get('/dashboard', requireLogin, showDashboard);
 
-// My Activity route
-router.get('/my-projects', requireLogin, showMyActivityPage);
-
-// Account Settings routes
-router.get('/account-settings', requireLogin, showAccountSettingsPage);
-router.post('/account-settings/profile', requireLogin, updateProfileHandler);
-router.post('/account-settings/password', requireLogin, updatePasswordHandler);
-
-// ========== VOLUNTEER ROUTES (require login) ==========
+// ========== VOLUNTEER ROUTES ==========
 router.post('/project/:id/volunteer', requireLogin, addVolunteerHandler);
 router.post('/project/:id/remove-volunteer', requireLogin, removeVolunteerHandler);
 
-// ========== ADMIN ONLY ROUTES (require admin role) ==========
+// ========== ADMIN ONLY ROUTES - ORGANIZATIONS ==========
+console.log('Loading organization admin routes...');
+router.get('/new-organization', requireAdmin, showCreateOrganizationForm);
+router.post('/new-organization', requireAdmin, createOrganizationHandler);
+router.get('/edit-organization/:id', requireAdmin, showEditOrganizationForm);
+router.post('/edit-organization/:id', requireAdmin, updateOrganizationHandler);
+console.log('Organization admin routes loaded');
+
+// ========== ADMIN ONLY ROUTES - PROJECTS ==========
+console.log('Loading project admin routes...');
+router.get('/new-project', requireAdmin, showCreateProjectForm);
+router.post('/new-project', requireAdmin, createProjectHandler);
+router.get('/edit-project/:id', requireAdmin, showEditProjectForm);
+router.post('/edit-project/:id', requireAdmin, updateProjectHandler);
+console.log('Project admin routes loaded');
+
+// ========== ADMIN ONLY ROUTES - CATEGORIES ==========
 router.get('/new-category', requireAdmin, showCreateCategoryForm);
 router.post('/new-category', requireAdmin, createCategoryHandler);
 router.get('/edit-category/:id', requireAdmin, showEditCategoryForm);
