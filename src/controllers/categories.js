@@ -51,12 +51,11 @@ const showCategoryDetailsPage = async (req, res, next) => {
     }
 };
 
-// Display create category form
+// Display create category form (Admin only - route protected)
 const showCreateCategoryForm = (req, res) => {
     const title = 'Create New Category';
     res.render('new-category', { 
         title, 
-        category: null, 
         errors: null,
         formData: {}
     });
@@ -67,7 +66,7 @@ const createCategoryHandler = async (req, res, next) => {
     const { name } = req.body;
     const errors = [];
     
-    // Server-side validation (min 3 chars, max 100, required)
+    // Server-side validation
     if (!name || name.trim() === '') {
         errors.push('Category name is required');
     } else if (name.length > 100) {
@@ -79,7 +78,6 @@ const createCategoryHandler = async (req, res, next) => {
     if (errors.length > 0) {
         return res.render('new-category', {
             title: 'Create New Category',
-            category: null,
             errors: errors,
             formData: { name }
         });
@@ -87,13 +85,12 @@ const createCategoryHandler = async (req, res, next) => {
     
     try {
         await createCategory(name.trim());
-        res.redirect('/categories?message=Category created successfully!');
+        res.redirect('/categories?message=Category+created+successfully!');
     } catch (error) {
-        if (error.code === '23505') { // Unique violation
+        if (error.code === '23505') {
             errors.push('A category with this name already exists');
             return res.render('new-category', {
                 title: 'Create New Category',
-                category: null,
                 errors: errors,
                 formData: { name }
             });
@@ -105,7 +102,7 @@ const createCategoryHandler = async (req, res, next) => {
     }
 };
 
-// Display edit category form
+// Display edit category form (Admin only - route protected)
 const showEditCategoryForm = async (req, res, next) => {
     try {
         const categoryId = req.params.id;
@@ -168,7 +165,7 @@ const updateCategoryHandler = async (req, res, next) => {
             err.status = 404;
             return next(err);
         }
-        res.redirect('/categories?message=Category updated successfully!');
+        res.redirect('/categories?message=Category+updated+successfully!');
     } catch (error) {
         if (error.code === '23505') {
             errors.push('A category with this name already exists');
@@ -187,7 +184,7 @@ const updateCategoryHandler = async (req, res, next) => {
     }
 };
 
-// Display assign categories page for a project
+// Display assign categories page for a project (Admin only - route protected)
 const showAssignCategoriesPage = async (req, res, next) => {
     try {
         const projectId = req.params.id;
@@ -217,7 +214,7 @@ const showAssignCategoriesPage = async (req, res, next) => {
     }
 };
 
-// Process category assignment for a project
+// Process category assignment for a project (Admin only - route protected)
 const assignCategoriesHandler = async (req, res, next) => {
     try {
         const projectId = req.params.id;
@@ -232,7 +229,7 @@ const assignCategoriesHandler = async (req, res, next) => {
         
         await updateProjectCategories(projectId, categoryIds);
         
-        res.redirect(`/project/${projectId}?message=Categories updated successfully!`);
+        res.redirect(`/project/${projectId}?message=Categories+updated+successfully!`);
     } catch (error) {
         console.error('Error in assignCategoriesHandler:', error);
         const err = new Error('Failed to assign categories');

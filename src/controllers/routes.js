@@ -25,31 +25,33 @@ import {
     showDashboard,
     getAllUsers
 } from './users.js';
-import { getUserVolunteerProjects } from '../models/volunteers.js';
 
 const router = express.Router();
 
-// Public routes (no login required)
+// ========== PUBLIC ROUTES (NO LOGIN REQUIRED - anyone can view) ==========
+router.get('/', showHomePage);
+router.get('/organizations', showOrganizationsPage);
+router.get('/organization/:id', showOrganizationDetailsPage);
+router.get('/projects', showProjectsPage);
+router.get('/project/:id', showProjectDetailsPage);
+router.get('/categories', showCategoriesPage);
+router.get('/category/:id', showCategoryDetailsPage);
+
+// ========== AUTHENTICATION ROUTES ==========
 router.get('/register', showUserRegistrationForm);
 router.post('/register', processUserRegistrationForm);
 router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
 
-// Protected routes (require login)
-router.get('/', requireLogin, showHomePage);
-router.get('/organizations', requireLogin, showOrganizationsPage);
-router.get('/organization/:id', requireLogin, showOrganizationDetailsPage);
-router.get('/projects', requireLogin, showProjectsPage);
-router.get('/project/:id', requireLogin, showProjectDetailsPage);
-router.get('/categories', requireLogin, showCategoriesPage);
-router.get('/category/:id', requireLogin, showCategoryDetailsPage);
+// ========== PROTECTED ROUTES (require login) ==========
+router.get('/dashboard', requireLogin, showDashboard);
 
-// Volunteer routes (protected by login)
+// ========== VOLUNTEER ROUTES (require login) ==========
 router.post('/project/:id/volunteer', requireLogin, addVolunteerHandler);
 router.post('/project/:id/remove-volunteer', requireLogin, removeVolunteerHandler);
 
-// Admin only routes
+// ========== ADMIN ONLY ROUTES (require admin role) ==========
 router.get('/new-category', requireAdmin, showCreateCategoryForm);
 router.post('/new-category', requireAdmin, createCategoryHandler);
 router.get('/edit-category/:id', requireAdmin, showEditCategoryForm);
@@ -58,10 +60,7 @@ router.get('/assign-categories/:id', requireAdmin, showAssignCategoriesPage);
 router.post('/assign-categories/:id', requireAdmin, assignCategoriesHandler);
 router.get('/users', requireAdmin, getAllUsers);
 
-// Dashboard route (requires login)
-router.get('/dashboard', requireLogin, showDashboard);
-
-// Error-handling routes
+// ========== ERROR ROUTES ==========
 router.get('/test-error', testErrorPage);
 
 export default router;

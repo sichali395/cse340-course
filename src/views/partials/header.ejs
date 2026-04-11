@@ -10,16 +10,19 @@
     <header>
         <nav>
             <ul>
+                <!-- PUBLIC LINKS - Always visible to everyone -->
+                <li><a href="/">Home</a></li>
+                <li><a href="/organizations">Organizations</a></li>
+                <li><a href="/projects">Projects</a></li>
+                <li><a href="/categories">Categories</a></li>
+                
+                <!-- AUTHENTICATION LINKS - Based on login status -->
                 <% if (isLoggedIn) { %>
-                    <!-- Show these links ONLY when logged in -->
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/organizations">Organizations</a></li>
-                    <li><a href="/projects">Projects</a></li>
-                    <li><a href="/categories">Categories</a></li>
+                    <!-- Show these when logged in -->
                     <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/logout">Logout</a></li>
                 <% } else { %>
-                    <!-- Show these links ONLY when NOT logged in -->
+                    <!-- Show these when NOT logged in -->
                     <li><a href="/register">Register</a></li>
                     <li><a href="/login">Login</a></li>
                 <% } %>

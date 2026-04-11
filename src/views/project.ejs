@@ -29,7 +29,10 @@
                         <span class="no-categories">No categories assigned yet</span>
                     <% } %>
                 </p>
-                <a href="/assign-categories/<%= project.project_id %>" class="btn-manage-categories">Manage Categories</a>
+                <!-- Only show Manage Categories link to Admin users -->
+                <% if (isLoggedIn && user && user.role_id === 2) { %>
+                    <a href="/assign-categories/<%= project.project_id %>" class="btn-manage-categories">Manage Categories</a>
+                <% } %>
             </div>
         </div>
         
