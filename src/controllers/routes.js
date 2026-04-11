@@ -1,5 +1,7 @@
 // src/controllers/routes.js
 import express from 'express';
+import { showMyActivityPage } from './activity.js';
+import { showAccountSettingsPage, updateProfileHandler, updatePasswordHandler } from './settings.js';
 import { showHomePage } from './index.js';
 import { showOrganizationsPage, showOrganizationDetailsPage } from './organizations.js';
 import { showProjectsPage, showProjectDetailsPage, addVolunteerHandler, removeVolunteerHandler } from './projects.js';
@@ -46,6 +48,14 @@ router.get('/logout', processLogout);
 
 // ========== PROTECTED ROUTES (require login) ==========
 router.get('/dashboard', requireLogin, showDashboard);
+
+// My Activity route
+router.get('/my-projects', requireLogin, showMyActivityPage);
+
+// Account Settings routes
+router.get('/account-settings', requireLogin, showAccountSettingsPage);
+router.post('/account-settings/profile', requireLogin, updateProfileHandler);
+router.post('/account-settings/password', requireLogin, updatePasswordHandler);
 
 // ========== VOLUNTEER ROUTES (require login) ==========
 router.post('/project/:id/volunteer', requireLogin, addVolunteerHandler);

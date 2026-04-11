@@ -17,7 +17,7 @@
     </div>
     
     <div class="dashboard-sections">
-        <!-- Volunteering Projects Section -->
+        <!-- My Volunteering Projects Section -->
         <div class="section">
             <h3>My Volunteering Projects</h3>
             <% if (volunteerProjects && volunteerProjects.length > 0) { %>
@@ -41,23 +41,27 @@
             <% } %>
         </div>
         
+        <!-- My Activity Section -->
         <div class="section">
             <h3>My Activity</h3>
             <p>View your volunteer history and upcoming commitments.</p>
             <a href="/my-projects">View My Projects</a>
         </div>
         
+        <!-- Account Settings Section -->
         <div class="section">
             <h3>Account Settings</h3>
             <p>Update your profile and preferences.</p>
             <a href="/account-settings">Edit Settings</a>
         </div>
         
+        <!-- Admin Controls Section (Only visible to Admin users) -->
         <% if (user.role_id === 2) { %>
             <div class="section admin-section">
                 <h3>Admin Controls</h3>
                 <p>Manage system users and settings.</p>
                 <a href="/users">Manage Users</a>
+                <a href="/new-category">Create New Category</a>
             </div>
         <% } %>
     </div>

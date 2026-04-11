@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+<main>
+    <h1>My Activity</h1>
+    
+    <% if (message) { %>
+        <div class="alert alert-success"><%= message %></div>
+    <% } %>
+    
+    <div class="welcome-section">
+        <h2>Welcome, <%= user.name %>!</h2>
+        <p>View your volunteer history and upcoming commitments.</p>
+    </div>
+    
+    <div class="dashboard-sections">
+        <div class="section">
+            <h3>Current Volunteering Projects</h3>
+            <% if (volunteerProjects && volunteerProjects.length > 0) { %>
+                <ul class="volunteer-list">
+                    <% volunteerProjects.forEach(function(project) { %>
+                        <li>
+                            <strong><%= project.title %></strong><br>
+                            <em><%= project.organization_name %></em><br>
+                            Location: <%= project.location %><br>
+                            Date: <%= new Date(project.date).toLocaleDateString() %><br>
+                            <a href="/project/<%= project.project_id %>">View Details</a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>You haven't volunteered for any projects yet.</p>
+                <a href="/projects">Browse Projects to Volunteer</a>
+            <% } %>
+        </div>
+        
+        <div class="section">
+            <h3>Volunteer History</h3>
+            <% if (historyProjects && historyProjects.length > 0) { %>
+                <ul class="volunteer-list">
+                    <% historyProjects.forEach(function(project) { %>
+                        <li>
+                            <strong><%= project.title %></strong><br>
+                            <em><%= project.organization_name %></em><br>
+                            Location: <%= project.location %><br>
+                            Date: <%= new Date(project.date).toLocaleDateString() %><br>
+                            Volunteered On: <%= new Date(project.volunteered_at).toLocaleDateString() %><br>
+                            <a href="/project/<%= project.project_id %>">View Details</a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>No volunteer history yet.</p>
+            <% } %>
+        </div>
+    </div>
+    
+    <div class="back-link">
+        <a href="/dashboard">← Back to Dashboard</a>
+    </div>
+</main>
+<%- include('partials/footer') %>
